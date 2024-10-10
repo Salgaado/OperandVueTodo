@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
     <el-form @submit.prevent="login">
-      <!-- Mensagem de Erro -->
-      <el-alert
+      <!-- alert de deu ruim -->
+      <el-alert  
         v-if="errorMessage"
         :title="errorMessage"
         type="error"
@@ -47,23 +47,22 @@ export default {
   setup() {
     const email = ref('');
     const password = ref('');
-    const errorMessage = ref(''); // Variável para armazenar a mensagem de erro
+    const errorMessage = ref(''); 
     const router = useRouter();
 
-    // Mapeamento de códigos de erro para mensagens amigáveis
+    
     const errorMessages = {
       'auth/invalid-email': 'O endereço de email não é válido.',
       'auth/user-disabled': 'Este usuário foi desativado.',
       'auth/user-not-found': 'Usuário não encontrado.',
       'auth/wrong-password': 'Senha incorreta.',
-      // Você pode adicionar mais códigos de erro e mensagens aqui
     };
 
     const login = async () => {
-      errorMessage.value = ''; // Limpa a mensagem de erro antes de tentar o login
+      errorMessage.value = ''; 
       try {
         await signInWithEmailAndPassword(auth, email.value, password.value);
-        router.push('/todos'); // Redireciona para a página de tarefas após login
+        router.push('/todos'); 
       } catch (error) {
         const errorCode = error.code;
         errorMessage.value =

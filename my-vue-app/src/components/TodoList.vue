@@ -1,20 +1,20 @@
 <template>
+  <logout/>
   <div class="todo-list-container">
-    <logout/>
     <h1 v-if="loading">Carregando...</h1>
     <el-row :gutter="20">
-      <el-col :span="24">
+      <el-col :span="24" class="task-input">
         <el-input
           v-model="newListTitle"
           placeholder="Nova Lista de Tarefas"
           clearable
           @keyup.enter="createTaskList"
         ></el-input>
-        <el-button @click="createTaskList" type="primary">Criar uma Lista de Tarefas</el-button>
+        <el-button @click="createTaskList" type="primary" class="bttn-tasklist">Criar</el-button>
       </el-col>
     </el-row>
 
-    <!-- Exibir as listas de tarefas -->
+    
     <el-row :gutter="20" class="task-lists">
       <el-col
         v-for="(list, index) in taskLists"
@@ -22,13 +22,13 @@
         :span="24"
         class="task-list"
       >
-        <!-- Cabeçalho da lista -->
+      
         <div class="list-header">
           <h3>{{ list.title }}</h3>
           <el-button @click="removeTaskList(list.id)" type="danger">Excluir Lista</el-button>
         </div>
 
-        <!-- Inputs para adicionar novas tarefas -->
+        
         <el-input
           v-model="list.newTaskTitle"
           placeholder="Título da nova tarefa"
@@ -59,24 +59,24 @@
               </el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="Criado em" prop="createdAt" width="180">
+          <el-table-column label="Criado em" prop="createdAt" width="120">
             <template #default="scope">
               {{ formatDate(scope.row.createdAt) }}
             </template>
           </el-table-column>
           <el-table-column label="Ações" width="150">
             <template #default="scope">
-              <!-- Botão para editar a tarefa -->
-              <el-button @click="editTask(index, scope.$index)" type="primary">Editar</el-button>
-              <!-- Botão para remover a tarefa -->
-              <el-button @click="removeTask(index, scope.$index)" type="danger">Excluir</el-button>
+              <!-- btn da tarefa -->
+              <el-button @click="editTask(index, scope.$index)" type="primary"><el-icon><Edit /></el-icon></el-button>
+              <!-- btn delet a tarefa -->
+              <el-button @click="removeTask(index, scope.$index)" type="danger"><el-icon><Delete /></el-icon></el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-col>
     </el-row>
 
-    <!-- Diálogo de Edição -->
+    <!-- modal -->
     <el-dialog
       title="Editar Tarefa"
       v-model="editDialogVisible"
@@ -99,9 +99,9 @@
 
 <script>
 import { onMounted, computed, ref } from 'vue';
-import { useTaskStore } from '../stores/useTaskStore'; // Importe a store
+import { useTaskStore } from '../stores/useTaskStore'; 
 import { auth } from '../firebase';
-import Logout from './Logout.vue'; // Importe outros componentes necessários
+import Logout from './Logout.vue'; 
 
 export default {
   name: 'TodoList',
@@ -112,14 +112,14 @@ export default {
   setup() {
     const taskStore = useTaskStore();
 
-    // Computed properties para acessar o estado
+    // Computa os estados
     const taskLists = computed(() => taskStore.taskLists);
     const loading = computed(() => taskStore.loading);
 
-    // Campo para criação de nova lista
+    // criação de nova lista
     const newListTitle = ref('');
 
-    // Campos para o modal de edição de tarefas
+    //para o modal de edição de tarefas
     const editDialogVisible = ref(false);
     const editTaskTitle = ref('');
     const editTaskDescription = ref('');
@@ -131,15 +131,14 @@ export default {
           taskStore.userId = user.uid;
           await taskStore.loadTaskLists();
         } else {
-          // Redireciona para login se não autenticado
-          window.location.href = '/login';
+          window.location.href = '/login'; //redir ao login 
         }
       });
     });
 
-    // Métodos para interagir com a store
+    
     const createTaskList = () => {
-      taskStore.createTaskList(newListTitle.value);
+      taskStore.createTaskList(newListTitle.value);   //para interagir com a db
       newListTitle.value = '';
     };
 
@@ -215,6 +214,7 @@ export default {
     };
   },
 };
+
 </script>
 
 <style scoped>
@@ -240,14 +240,19 @@ export default {
   margin-bottom: 10px;
 }
 
-.el-table td.el-table__cell div {
-    display: flex !important;
-    box-sizing: border-box;
-}
 
 .el-button+.el-button {
   margin-left: 0px;
 }
+
+
+.task-input{
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+
 
 
 </style>

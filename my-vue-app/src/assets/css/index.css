@@ -1,0 +1,20 @@
+
+#app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+
+.task-list{
+  width: 1400px;
+}
+
+.cell{
+  display: flex;
+}
+
+
+
+
