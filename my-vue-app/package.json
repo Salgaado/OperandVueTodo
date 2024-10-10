@@ -11,6 +11,7 @@
   "dependencies": {
     "element-plus": "^2.8.4",
     "firebase": "^10.14.0",
+    "pinia": "^2.2.4",
     "vue": "^3.5.10",
     "vue-router": "^4.4.5"
   },
